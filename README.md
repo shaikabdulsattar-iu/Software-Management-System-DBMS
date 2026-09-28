@@ -1,45 +1,61 @@
-# Software Management System — Final Secure Version
+# Software Management System — Runnable Version
 
-## What is different
+This version is ready for local development and can also use MySQL for deployment.
 
-This version does **not** contain a default Admin, Manager, or Team Leader account.
+## 1. Run locally — no MySQL required
 
-### First launch
+Open a terminal in this folder and run:
 
-1. Configure MySQL.
-2. Start/deploy the application.
-3. Open the site.
-4. The application shows **Create Main Admin**.
-5. Enter your own:
-   - Full name
-   - Email
-   - Username
-   - Password
-6. After creation, the Admin setup endpoint is permanently locked.
+```bash
+npm install
+npm start
+```
 
-### Admin
+Then open:
 
-The Main Admin can create:
-- Manager accounts
-- Team Leader accounts
+```text
+http://localhost:10000
+```
 
-The Admin can also enable/disable those accounts.
+On first launch, the application shows **Create Main Admin**. Create your own account and then sign in.
 
-The Main Admin cannot be disabled from the UI.
+For local development, accounts are stored in:
 
-### Security
+```text
+data/users.json
+```
 
-- Passwords are hashed with bcrypt.
-- Authentication is server-side.
-- HTTP-only session cookies are used.
-- Role authorization is enforced on server endpoints.
-- Manager and Team Leader cannot access Admin user-management APIs.
-- No passwords are stored in the frontend.
-- No demo credentials are displayed after deployment.
+This file is created automatically. Do not commit real production passwords.
 
-## Render deployment
+## 2. Run with MySQL
 
-Create a **Web Service**, not a Static Site.
+If `DATABASE_URL` or the `DB_HOST` variables are configured, the application automatically uses MySQL instead of local JSON storage.
+
+Copy `.env.example` to `.env` and configure:
+
+```text
+NODE_ENV=development
+PORT=10000
+SESSION_SECRET=replace-with-a-long-random-secret
+DATABASE_URL=mysql://USERNAME:PASSWORD@HOST:3306/software_management
+```
+
+Or use:
+
+```text
+DB_HOST=
+DB_PORT=3306
+DB_USER=
+DB_PASSWORD=
+DB_NAME=software_management
+DB_SSL=false
+```
+
+The server creates the `users` table automatically. `database/schema.sql` is also included if you want to create the database manually.
+
+## 3. Render deployment
+
+Create a **Web Service**.
 
 Build command:
 
@@ -53,13 +69,7 @@ Start command:
 npm start
 ```
 
-Root directory:
-
-```text
-(empty)
-```
-
-Add:
+Environment variables:
 
 ```text
 NODE_ENV=production
@@ -67,22 +77,9 @@ SESSION_SECRET=<long random secret>
 DATABASE_URL=<your MySQL connection URL>
 ```
 
-A MySQL database is required for persistent accounts.
+For production, use MySQL rather than local JSON storage because local filesystem data may not be persistent on hosting platforms.
 
-## Local setup
-
-```bash
-npm install
-npm start
-```
-
-Then open:
-
-```text
-http://localhost:10000
-```
-
-## Project structure
+## 4. Project structure
 
 ```text
 Software-Management-System-FINAL/
@@ -92,10 +89,42 @@ Software-Management-System-FINAL/
 ├── README.md
 ├── database/
 │   └── schema.sql
+├── data/
+│   └── users.json          # created automatically for local mode
 └── public/
     └── index.html
 ```
 
-## Important
+## 5. Main features
 
-This project intentionally does not include a hard-coded Admin password. Create your own Admin on first launch.
+- Main Admin setup on first launch
+- Manager and Team Leader account creation
+- Role-based access
+- Employee management
+- Project management
+- Team management
+- Team member assignments
+- Sprint management
+- Task management
+- Bug tracking
+- Reports dashboard
+- Browser-local project data using localStorage
+- Optional MySQL authentication persistence
+- bcrypt password hashing
+- HTTP-only sessions
+
+## 6. If you get `npm` is not recognized
+
+Install Node.js LTS, restart the terminal, and run:
+
+```bash
+node -v
+npm -v
+```
+
+Then:
+
+```bash
+npm install
+npm start
+```

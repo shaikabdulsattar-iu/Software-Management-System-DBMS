@@ -2,7 +2,7 @@
   "name": "software-management-system",
   "version": "2.0.0",
   "private": true,
-  "description": "Role-based Software Management System with MySQL persistence",
+  "description": "Runnable role-based Software Management System with local development storage and optional MySQL persistence",
   "scripts": {
     "start": "node server.js"
   },
